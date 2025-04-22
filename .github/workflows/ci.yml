@@ -30,7 +30,7 @@ jobs:
         run: npm ci
 
       - name: Iniciar Servidor de Desenvolvimento
-        run: npm run dev &
+        run: npm run dev -- --host --port 5173 &
 
       - name: Esperar o Servidor Estar Pronto
         run: npx wait-on http://localhost:5173
