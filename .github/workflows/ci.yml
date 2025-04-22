@@ -1,27 +1,39 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
-jobs: 
-  build-test:
+jobs:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Baixar Código
         uses: actions/checkout@v3
 
-      - name: Cypress Tests
-        uses: cypress-io/github-action@v5
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
         with:
-          start: 'npm run dev'
-          wait-on: 'http://localhost:5173'
-          build: 'npm run build'
+          node-version: '18'
 
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with: 
-          name: Cypress Result
-          path: |
-            cypress/screenshots
-            cypress/videos
-            cypress/results
-          if-no-files-found: ignore
+      - name: Cache de Dependências do Node.js
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-${{ runner.os }}-
+
+      - name: Instalar Dependências
+        run: npm ci
+
+      - name: Iniciar Servidor de Desenvolvimento
+        run: npm run dev &
+
+      - name: Esperar o Servidor Estar Pronto
+        run: npx wait-on http://localhost:5173
+
+      - name: Executar Testes Cypress
+        run: npm run test:e2e
