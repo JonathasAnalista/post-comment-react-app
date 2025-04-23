@@ -33,4 +33,4 @@ jobs: # É oque faz rodar a automação
             cypress/videos
             cypress/results
         # Se não encontrar nenhum file ou seja arquivo dai usamos o if-no-files-found segue abaixo:
-        if-no-files-found: ignore 
+         if-no-files-found: ignore 
