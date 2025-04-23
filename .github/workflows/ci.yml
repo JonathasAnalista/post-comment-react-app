@@ -1,76 +1,37 @@
-# name: CI  # Colando um nome no CI no caso "CI"
+name: CI  # Colando um nome no CI no caso "CI"
 
-# on: [push] # Passar quando que o teste será rodado no caso toda vez que fizer um push para o repositório
+on: [push] # Passar quando que o teste será rodado no caso toda vez que fizer um push para o repositório
 
-# jobs: # É oque faz rodar a automação
-#   build-test: # nome dado ao jobs "build-test"
-#     runs-on: ubuntu-latest  # Dizendo o tipo de maquina que vai rodar a automação no caso no LINUX usando o UBUNTO
-#     steps: # Os steps são os passo a passo de cada parte que tem que rodar o CI
+jobs: # É oque faz rodar a automação
+  build-test: # nome dado ao jobs "build-test"
+    runs-on: ubuntu-latest  # Dizendo o tipo de maquina que vai rodar a automação no caso no LINUX usando o UBUNTO
+    steps: # Os steps são os passo a passo de cada parte que tem que rodar o CI
 
-#       - name: Checkout # Rodar o checkout para poder ter acesso aos arquivos  do projeto
-#         uses: actions/checkout@v3 # Com uses nao precisa criar os steps certinho porque o checkout é um monte de comando que tem que fazer só que tem o action que é do própio github actions que é uma coleção desses steps que a gente tem que fazer só que de um jeito mais fácil dai chamamos actions/checkout@v3
+      - name: Checkout # Rodar o checkout para poder ter acesso aos arquivos  do projeto
+        uses: actions/checkout@v3 # Com uses nao precisa criar os steps certinho porque o checkout é um monte de comando que tem que fazer só que tem o action que é do própio github actions que é uma coleção desses steps que a gente tem que fazer só que de um jeito mais fácil dai chamamos actions/checkout@v3
 
-#         # no código abaixo vamos rodar a automação
-#       - name: Cypress Tests
-#         uses: cypress-io/github-action@v5 # Vai instalar tudo que precisa instalar e verificar se esta tudo certo pra gente 
+        # no código abaixo vamos rodar a automação
+      - name: Cypress Tests
+        uses: cypress-io/github-action@v5 # Vai instalar tudo que precisa instalar e verificar se esta tudo certo pra gente 
 
-#         # Agora abaixo vamos dizer oque precisa rodar antes do cypress rodar:
-#         with:
-#             start: 'npm run dev' # É oque faz o projeto rodar 
-#             build: 'npm run build' # Ver se a build está funcionando corretamente pra ver se não vai quebrar antes de ir pra produção
+        # Agora abaixo vamos dizer oque precisa rodar antes do cypress rodar:
+        with:
+            start: 'npm run dev' # É oque faz o projeto rodar 
+            build: 'npm run build' # Ver se a build está funcionando corretamente pra ver se não vai quebrar antes de ir pra produção
         
         
-#         # Agora nos temos que declarar também os artefatos que o cypress vai gerar pra ver o que esta errado ou correto segue abaixo:
-#       - uses: actions/upload-artifact@v4
+        # Agora nos temos que declarar também os artefatos que o cypress vai gerar pra ver o que esta errado ou correto segue abaixo:
+      - uses: actions/upload-artifact@v4
 
-#         ## subir os artefatos sempre  segue codigo abaixo:
-#         if: always() 
-#         # Colocando umas informações especificas segue abaixo:
-#         with: 
-#          name: Cypress Result
-#          path: | # Deixar um path pra cada um dos resultados que obtemos no cypress e usei a barra vertical pra colocar os caminhos um em cima do outro pra nao ficar um em cima do outro segue abaixo:
-#             cypress/screenshots 
-#             cypress/videos
-#             cypress/results
-#         # Se não encontrar nenhum file ou seja arquivo dai usamos o if-no-files-found segue abaixo:
-#          if-no-files-found: ignore 
+        ## subir os artefatos sempre  segue codigo abaixo:
+        if: always() 
+        # Colocando umas informações especificas segue abaixo:
+        with: 
+         name: Cypress Result
+         path: | # Deixar um path pra cada um dos resultados que obtemos no cypress e usei a barra vertical pra colocar os caminhos um em cima do outro pra nao ficar um em cima do outro segue abaixo:
+            cypress/screenshots 
+            cypress/videos
+            cypress/results
+        # Se não encontrar nenhum file ou seja arquivo dai usamos o if-no-files-found segue abaixo:
+         if-no-files-found: ignore 
 
-name: CI
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Baixar Código
-        uses: actions/checkout@v3
-
-      - name: Configurar Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Cache de Dependências do Node.js
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: npm-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            npm-${{ runner.os }}-
-
-      - name: Instalar Dependências
-        run: npm ci
-
-      - name: Iniciar Servidor de Desenvolvimento
-        run: npm run dev -- --host --port 5173 &
-
-      - name: Esperar o Servidor Estar Pronto
-        run: npx wait-on http://localhost:5173
-
-      - name: Executar Testes Cypress
-        run: npm run test:e2e
