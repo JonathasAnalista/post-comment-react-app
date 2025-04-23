@@ -11,7 +11,7 @@ jobs: # É oque faz rodar a automação
         uses: actions/checkout@v3 # Com uses nao precisa criar os steps certinho porque o checkout é um monte de comando que tem que fazer só que tem o action que é do própio github actions que é uma coleção desses steps que a gente tem que fazer só que de um jeito mais fácil dai chamamos actions/checkout@v3
 
         # no código abaixo vamos rodar a automação
-        name: Cypress Tests
+      - name: Cypress Tests
         uses: cypress-io/github-action@v5 # Vai instalar tudo que precisa instalar e verificar se esta tudo certo pra gente 
 
         # Agora abaixo vamos dizer oque precisa rodar antes do cypress rodar:
@@ -21,13 +21,13 @@ jobs: # É oque faz rodar a automação
         
         
         # Agora nos temos que declarar também os artefatos que o cypress vai gerar pra ver o que esta errado ou correto segue abaixo:
-        uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v3
 
         ## subir os artefatos sempre  segue codigo abaixo:
         if: always() 
         # Colocando umas informações especificas segue abaixo:
         with: 
-         nome: Cypress Result
+         name: Cypress Result
          path: | # Deixar um path pra cada um dos resultados que obtemos no cypress e usei a barra vertical pra colocar os caminhos um em cima do outro pra nao ficar um em cima do outro segue abaixo:
             cypress/screenshots 
             cypress/videos
