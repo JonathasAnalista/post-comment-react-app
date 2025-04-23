@@ -8,7 +8,7 @@ jobs: # É oque faz rodar a automação
     steps: # Os steps são os passo a passo de cada parte que tem que rodar o CI
 
       - name: Checkout # Rodar o checkout para poder ter acesso aos arquivos  do projeto
-        uses: actions/checkout@v3 # Com uses nao precisa criar os steps certinho porque o checkout é um monte de comando que tem que fazer só que tem o action que é do própio github actions que é uma coleção desses steps que a gente tem que fazer só que de um jeito mais fácil dai chamamos actions/checkout@v3
+        uses: actions/checkout@v3 # Com 'uses' nao precisa criar os steps certinho porque o checkout é um monte de comando que tem que fazer só que tem o action que é do própio github actions que é uma coleção desses steps que a gente tem que fazer só que de um jeito mais fácil dai chamamos actions/checkout@v3
 
         # no código abaixo vamos rodar a automação
       - name: Cypress Tests
