@@ -4,7 +4,7 @@ on: [push] # Passar quando que o teste será rodado no caso toda vez que fizer u
 
 jobs: # É oque faz rodar a automação
   build-test: # nome dado ao jobs "build-test"
-    runs-on: ubuntu-24.4  # Dizendo o tipo de maquina que vai rodar a automação no caso no LINUX usando o UBUNTO
+    runs-on: ubuntu-latest  # Dizendo o tipo de maquina que vai rodar a automação no caso no LINUX usando o UBUNTO
     steps: # Os steps são os passo a passo de cada parte que tem que rodar o CI
 
       - name: Checkout # Rodar o checkout para poder ter acesso aos arquivos  do projeto
