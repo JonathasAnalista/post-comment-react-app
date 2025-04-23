@@ -21,7 +21,7 @@ jobs: # É oque faz rodar a automação
         
         
         # Agora nos temos que declarar também os artefatos que o cypress vai gerar pra ver o que esta errado ou correto segue abaixo:
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
 
         ## subir os artefatos sempre  segue codigo abaixo:
         if: always() 
